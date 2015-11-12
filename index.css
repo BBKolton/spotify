@@ -1,0 +1,42 @@
+h1, h2, h3, h4, h5 {
+	font-family: 'Roboto Condensed', sans-serif;
+}
+
+.jumbotron {
+	text-align: center;
+	color: white;
+	background-color: black;
+}
+
+.results-wrap a {
+	color: white;
+}
+
+.results-wrap a:hover {
+	color: white;
+	text-decoration: none;
+}
+
+.results {
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+	height: 200px;
+	display: inline-block;
+	background-color: black;
+	width: 100%;
+	margin-top: 20px;
+	border-radius: 10px;
+	overflow: hidden;
+}
+
+.results p {
+	padding: 5px;
+	display: inline-block;
+	vertical-align: middle;
+	font-family: "Roboto Condensed", sans-serif;
+	font-size: 50px;
+	line-height: 85%;
+	background-color: rgba(0,0,0,.15);
+	width: 100%;
+}

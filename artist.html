@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html ng-app='myApp' ng-controller='game'>
+	<head>
+		<meta charset="utf-8">
+			<meta http-equiv="X-UA-Compatible" content="IE=edge">
+			<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>{{artist.name}}</title>
+		
+		<!-- Include libraries -->
+		<link href='https://fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
+		<script src="https://code.jquery.com/jquery.min.js"></script>
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.2/angular.min.js"></script>
+		
+		<!-- Read scripts -->
+		<script src="app.js"></script>
+		<link href="artist.css" type="text/css" rel="stylesheet"/>	
+		
+	</head>
+	<body >
+		<div class='jumbotron' id='jumbotron'>
+			<div class='container'>
+				<h1>{{artist.name}}</h1>
+			</div>
+		</div>
+		<div class='return'>
+			<div class='container'>
+				<div class='row'>
+					<div class='col-xs-12 col-sm-4 col-md-3 col-lg-2'>
+						<a href='index.html'> &lt; RETURN TO SEARCH</a>
+					</div>
+					<div class='hidden-xs col-sm-8 col-md-9 col-lg-10'>
+						<div id='timerBar'></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class='container' id='start'>
+			<div class='text-center'>
+				<h2>Think you know the musical world around {{artist.name}}?</h2>
+				<p>Test your musical knowledge as we play artists similar to {{artist.name}}. You'll have 30 seconds to make a guess.</p>
+				<p>Enter the number of rounds you wish to play: </p>
+				<div class='hidden-xs col-sm-1 col-md-2'></div>
+				<div class='input-group col-xs-12 col-sm-10 col-md-8'>
+					<input type='number' class='form-control' ng-model='total' placeholder='Number of Rounds' value='10' />
+					<span class='input-group-btn'>
+						<input type='button' class='btn btn-success' ng-click='startGame()' value='Start Game' ng-disabled='total < 1' >
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class='container' id='middle'>
+			<div class='row'>
+				<div class='col-xs-12 col-md-3 score'>
+					<h2>SCORE</h2>
+					<div class='col-xs-6 correct'>
+						<!-- <p>Right</p> -->
+						<p>{{correct}}</p>
+					</div>
+					<div class='col-xs-6 incorrect'>
+						<!-- <p>Wrong</p> -->
+						<p>{{incorrect}}</p>
+					</div>
+					<p ng-show='guesses.length'><i>Click an artist to go to their page</i></p>
+					<div class='row'>
+						<div ng-repeat='guess in guesses'>
+							<a href='https://play.spotify.com/track/{{guess.track}}' target='_blank'>
+								<div class='col-xs-12 guess {{guess.correct ? "correctGuess" : "incorrectGuess"}}'>
+									<h4><span class='bold'>{{guess.name}}</span>: {{guess.song}}</h4>
+									<div class='row'>
+										<div class='col-xs-8 different-artist'>
+											<a href='artist.html#{{guess.artist}}' onclick='window.location.reload(true)'>Start new with this artist</a>
+										</div>
+										<div class='col-xs-4'>
+											<p class='text-right'>{{guess.correct ? 'Correct!' : 'Missed'}}</p>
+										</div>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class='col-xs-12 col-md-9' id='possibles'>
+					<div ng-repeat="possible in possibles">
+						<div class='col-xs-12 col-sm-6 col-md-4 results-wrap'>
+							<a ng-click='registerGuess(possible.correct)'>
+								<div class='results' style='background-image: url("{{possible.image}}")' >
+									<p>{{possible.name}}</p>
+								</div>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class='container hidden' id='end'>
+			<div class='row'>
+				<div class='col-xs-12 col-md-4 endCorrect score'>
+					<h3 class='text-center'>Correct</h3>
+					<div class='correct'>
+						<!-- <p>Wrong</p> -->
+						<p>{{correct}}</p>
+					</div>
+					<div class='row'>
+						<div ng-repeat='guess in guesses | filter: {correct: true}'>
+							<a href='https://play.spotify.com/track/{{guess.track}}' target='_blank'>
+								<div class='col-xs-12 guess {{guess.correct ? "correctGuess" : "incorrectGuess"}}'>
+									<h4><span class='bold'>{{guess.name}}</span>: {{guess.song}}</h4>
+									<div class='row'>
+										<div class='col-xs-8 different-artist'>
+											<a href='artist.html#{{guess.artist}}' onclick='window.location.reload(true)'>Start new with this artist</a>
+										</div>
+										<div class='col-xs-4'>
+											<p class='text-right'>{{guess.correct ? 'Correct!' : 'Missed'}}</p>
+										</div>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+
+				</div>
+				<div class='col-xs-12 col-md-4'>
+					<h2 class='text-center'>Finished!</h2>
+					<p class='message text-center'>{{endMessage}}</p>
+					<p>Here's some more {{artist.name}} while you look over your stats. Thanks for playing! <span ng-click='restart()'><b>Click here to play again with the same artist!</b></span></p>
+					<p><b>Currently Playing</b>: {{trackName}}</p>
+				</div>
+				<div class='col-xs-12 col-md-4 endMissed score'>
+					<h3 class='text-center'>Missed</h3>
+					<div class='incorrect'>
+						<!-- <p>Wrong</p> -->
+						<p>{{incorrect}}</p>
+					</div>
+					<div class='row'>
+						<div ng-repeat='guess in guesses | filter: {correct: false}'>
+							<a href='https://play.spotify.com/track/{{guess.track}}' target='_blank'>
+								<div class='col-xs-12 guess {{guess.correct ? "correctGuess" : "incorrectGuess"}}'>
+									<h4><span class='bold'>{{guess.name}}</span>: {{guess.song}}</h4>
+									<div class='row'>
+										<div class='col-xs-8 different-artist'>
+											<a href='artist.html#{{guess.artist}}' onclick='window.location.reload(true)'>Start new with this artist</a>
+										</div>
+										<div class='col-xs-4'>
+											<p class='text-right'>{{guess.correct ? 'Correct!' : 'Missed'}}</p>
+										</div>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
