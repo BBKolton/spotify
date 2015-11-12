@@ -140,6 +140,6 @@ a:hover {
 	border-radius: 6px;
 }
 
-.message p span {
+.message span {
 	cursor: pointer;
 }
